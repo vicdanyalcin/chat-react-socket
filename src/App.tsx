@@ -1,24 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import { Layout } from "antd";
+import ConversationBox from "./components/ConversationBox";
+
+const { Content } = Layout;
+
+const DUMMY_DATA = [
+  {
+    senderId: "Jane",
+    text: "Lorem ıpsum?",
+  },
+  {
+    senderId: "Mary",
+    text: "Dolor sit amöes  ?",
+  },
+];
 
 function App() {
+  const [conversations, setConversations] = useState<any[]>([]);
+  useEffect(() => {
+    setConversations(DUMMY_DATA);
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <Layout>
+        <Content
+          className="site-layout"
+          style={{ padding: "0 50px", marginTop: 64 }}
         >
-          Learn React
-        </a>
-      </header>
+          <div
+            className="site-layout-background"
+            style={{ padding: 24, minHeight: 380 }}
+          >
+            <ConversationBox conversations={conversations} />
+          </div>
+        </Content>
+        {/*<Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>*/}
+      </Layout>
     </div>
   );
 }
