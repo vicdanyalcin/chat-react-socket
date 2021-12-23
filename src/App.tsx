@@ -23,20 +23,11 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App" style={{ height: "100%" }}>
       <Layout>
-        <Content
-          className="site-layout"
-          style={{ padding: "0 50px", marginTop: 64 }}
-        >
-          <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: 380 }}
-          >
-            <ConversationBox conversations={conversations} />
-          </div>
+        <Content className="site-layout">
+          <ConversationBox conversations={conversations} />
         </Content>
-        {/*<Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>*/}
       </Layout>
     </div>
   );

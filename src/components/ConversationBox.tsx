@@ -23,6 +23,26 @@ const MACROS = [
     id: 4,
     text: "Lorem",
   },
+  {
+    id: 5,
+    text: "Lorem",
+  },
+  {
+    id: 6,
+    text: "Lorem",
+  },
+  {
+    id: 7,
+    text: "Lorem",
+  },
+  {
+    id: 8,
+    text: "Lorem",
+  },
+  {
+    id: 9,
+    text: "Lorem",
+  },
 ];
 
 const ConversationBox = ({ conversations }: any) => {
@@ -33,9 +53,9 @@ const ConversationBox = ({ conversations }: any) => {
   }, []);
 
   return (
-    <div>
-      <Row>
-        <Col span={18}>
+    <Row justify="center">
+      <Col span={18} style={{ background: "blue" }}>
+        <div style={{ padding: 10, margin: 10, minHeight: 780 }}>
           <Title level={2}>In progress</Title>{" "}
           <Button icon={<MoreOutlined />} />
           <Divider />
@@ -46,13 +66,15 @@ const ConversationBox = ({ conversations }: any) => {
               </ul>
             </li>
           ))}
-        </Col>
-        <Col span={6}>
-          <Macros macros={macros} />
-        </Col>
-      </Row>
-      <MessageInput />
-    </div>
+        </div>
+        <div style={{ padding: 24, background: "#fff" }}>
+          <MessageInput />
+        </div>
+      </Col>
+      <Col span={6}>
+        <Macros macros={macros} />
+      </Col>
+    </Row>
   );
 };
 
