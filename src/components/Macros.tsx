@@ -1,13 +1,14 @@
 import React from "react";
-import { Card } from "antd";
+import { Button, Card } from "antd";
 
-const Macros = ({ macros }) => {
+const Macros = ({ macros, saveSelectedMacro }) => {
   return (
-    <div style={{ background: "red", height: "100vh" }}>
+    <div style={{ height: "100vh" }}>
       MACRO COMPONENT
       {macros.map((macro) => (
         <Card style={{ paddingTop: 10, margin: 20 }} key={macro.id}>
           {macro.text}
+          <Button onClick={() => saveSelectedMacro(macro.id)}>CHoose</Button>
         </Card>
       ))}
     </div>
