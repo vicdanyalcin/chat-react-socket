@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  height: 100%
 }
 
 .App-logo {
@@ -35,4 +36,55 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.site-layout {
+  background: white;
+}
+
+.conversation-box {
+  padding: 10px;
+  margin: 10px;
+  min-height: 740px;
+  max-height: 740px;
+  border-radius: 10px;
+  background: #F6F6F6;
+  overflow: auto;
+}
+.message-input {
+  background: #F6F6F6;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.macros-card {
+  padding-top: 10px;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.left-bubble {
+  text-align: left;
+  background: white;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.right-bubble {
+  background: #E75823;
+  text-align: right;
+  padding: 10px;
+  margin: 10px;
+  color: white;
+  border-radius: 10px;
+}
+
+.macros {
+  height: 90vh;
+  background: #F6F6F6;
+  border-radius: 10px;
+  padding-top: 5px;
+  margin-top: 10px
 }

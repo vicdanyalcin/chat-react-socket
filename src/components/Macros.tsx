@@ -1,16 +1,42 @@
 import React from "react";
-import { Button, Card } from "antd";
+import { Button, Card, Col, Row } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 
 const Macros = ({ macros, saveSelectedMacro }) => {
   return (
-    <div style={{ height: "100vh" }}>
-      MACRO COMPONENT
-      {macros.map((macro) => (
-        <Card style={{ paddingTop: 10, margin: 20 }} key={macro.id}>
-          {macro.text}
-          <Button onClick={() => saveSelectedMacro(macro.id)}>CHoose</Button>
-        </Card>
-      ))}
+    <div className={"macros"}>
+      Macros
+      <Button
+        style={{ textAlign: "right" }}
+        shape="circle"
+        type="text"
+        icon={<DownOutlined />}
+      />
+      <Row>
+        {macros.map(
+          (macro: {
+            id: React.Key | null | undefined;
+            text:
+              | boolean
+              | React.ReactChild
+              | React.ReactFragment
+              | React.ReactPortal
+              | null
+              | undefined;
+          }) => (
+            <Col key={macro.id} xs={4} xl={24}>
+              <Card
+                className={"macros-card"}
+                key={macro.id}
+                hoverable={true}
+                onClick={() => saveSelectedMacro(macro.id)}
+              >
+                {macro.text}
+              </Card>
+            </Col>
+          )
+        )}
+      </Row>
     </div>
   );
 };

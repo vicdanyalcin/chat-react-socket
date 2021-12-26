@@ -1,93 +1,63 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
+import io from "socket.io-client";
 import "./App.css";
 import { Col, Layout, Row } from "antd";
 import ConversationBox from "./components/ConversationBox";
-import MessageInput from "./components/MessageInput";
 import Macros from "./components/Macros";
+import MessageInput from "./components/MessageInput";
+import MACROS from "./components/MACROS";
 
 const { Content } = Layout;
 
-const DUMMY_DATA = [
-  {
-    senderId: "Jane",
-    text: "Lorem ıpsum?",
-  },
-  {
-    senderId: "Mary",
-    text: "Dolor sit amöes  ?",
-  },
-];
-const MACROS = [
-  {
-    id: 1,
-    text: "How can I help you?",
-  },
-  {
-    id: 2,
-    text: "What about trying the other one?",
-  },
-  {
-    id: 3,
-    text: "what does the dog say",
-  },
-  {
-    id: 4,
-    text: "How many fingers do I have?",
-  },
-  {
-    id: 5,
-    text: "Lorem",
-  },
-  {
-    id: 6,
-    text: "Lorem",
-  },
-];
-
 function App() {
-  const [conversations, setConversations] = useState<any[]>([]);
-  const [selectedMacroId, setSelectedMacroId] = useState<number>([]);
-  const [selectedMacro, setSelectedMacro] = useState<any[]>([]);
-
+  const [state, setState] = useState({ message: "", name: "me" });
+  const [conversations, setConversations] = useState<string[]>([]);
+  const [selectedMacroId, setSelectedMacroId] = useState<number>();
   const saveSelectedMacro = useCallback((id: number) => {
-    console.log(id);
     setSelectedMacroId(id);
   }, []);
+  const socketRef = useRef();
+
+  const mappedMacro = MACROS.filter((macro) => macro.id === selectedMacroId);
 
   useEffect(() => {
-    setConversations(DUMMY_DATA);
-  }, []);
-  const mappedMacro = MACROS.filter((x) => x.id === selectedMacroId);
-  const handleSend = () => {
-    setConversations((conversations) => [
-      ...conversations,
-      {
-        senderId: Math.random(),
-        text: mappedMacro[0].text,
-        senderName: "Mary",
-      },
-    ]);
-    setTimeout(() => {
-      setConversations((conversations) => [
+    socketRef.current = io.connect("http://localhost:8000");
+    socketRef.current.on("message", ({ name, message }) => {
+      setConversations([
         ...conversations,
-        { senderId: Math.random(), text: "Another Text", senderName: "Jane" },
+        { name, message, id: Math.random() },
       ]);
-    }, 3000);
+    });
+    return () => socketRef.current.disconnect();
+  }, [conversations]);
+
+  const onInputChange = (e: { target: { name: string; value: string } }) => {
+    setState({ ...state, [e.target.name]: e.target.value });
   };
+  useEffect(() => {
+    if (selectedMacroId) {
+      setState({ ...state, message: state.message + mappedMacro?.[0].text });
+    }
+  }, [selectedMacroId]);
+
+  const onSubmit = (e: { preventDefault: () => void }) => {
+    const { name, message } = state;
+    socketRef.current.emit("message", { name, message });
+    e.preventDefault();
+    setState({ message: "", name });
+  };
+
   return (
-    <div className="App" style={{ height: "100%" }}>
+    <div className="App">
       <Layout>
         <Content className="site-layout">
           <Row>
             <Col span={18}>
-              <ConversationBox
-                conversations={conversations}
-                onClick={handleSend}
-              />
+              <ConversationBox conversations={conversations} />
               <MessageInput
-                selectedMacro={selectedMacroId}
-                setSelectedMacro={setSelectedMacro}
-                onClick={handleSend}
+                selectedMacro={state.message}
+                onClick={onSubmit}
+                onChange={(e: any) => onInputChange(e)}
               />
             </Col>
             <Col span={6}>
